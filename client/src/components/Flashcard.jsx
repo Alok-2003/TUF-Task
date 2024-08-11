@@ -1,32 +1,94 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactFlipCard from 'reactjs-flip-card';
+import axios from 'axios';
 
-function Flashcard({ flashcard }) {
-  const [flipped, setFlipped] = useState(false);
+function FlashcardApp() {
+  const [flashcards, setFlashcards] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flipCardRef = useRef(null); // Reference to the flip card component
 
-  const gradients = [
-    'bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500',
-    'bg-gradient-to-r from-green-400 to-blue-500',
-    'bg-gradient-to-r from-purple-400 via-pink-500 to-red-500',
-    'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500',
-    'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600',
-  ];
+  useEffect(() => {
+    const fetchFlashcards = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/allcards');
+        setFlashcards(response.data);
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+      }
+    };
+    fetchFlashcards();
+  }, []);
 
-  const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
+    
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => 
+      (prevIndex - 1 + flashcards.length) % flashcards.length
+    );
+    
+  };
+
+  
+
+  const styles = {
+    card: {
+      width: '400px',
+      height: '300px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '20px',
+      padding: '20px',
+      color: 'white',
+      fontSize: '1.5rem',
+      backfaceVisibility: 'hidden',
+    },
+    container: {
+      width: '500px',
+      height: '400px',
+      margin: '50px auto',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      perspective: '1000px', // Perspective for 3D effect
+    },
+    button: {
+      margin: '10px',
+      padding: '10px 20px',
+      fontSize: '1rem',
+      border: 'none',
+      borderRadius: '5px',
+      backgroundColor: '#007bff',
+      color: 'white',
+      cursor: 'pointer',
+    },
+  };
 
   return (
-    <div
-      className={`w-96 h-64 mx-auto shadow-lg rounded-lg overflow-hidden transform-style preserve-3d perspective-1000 ${randomGradient} cursor-pointer`}
-      onClick={() => setFlipped(!flipped)}
-    >
-      <div
-        className={`w-full h-full flex items-center justify-center transition-transform transform duration-500 ${flipped ? 'rotate-y-180' : ''}`}
-      >
-        <h2 className="text-2xl font-semibold text-white text-center px-4">
-          {flipped ? `Answer: ${flashcard.answer}` : `Question: ${flashcard.question}`}
-        </h2>
-      </div>
+    <div style={styles.container}>
+      {flashcards.length > 0 && (
+        <div  >
+          <ReactFlipCard
+            ref={flipCardRef}
+            containerStyle={{ height: '300px', width: '400px' }}
+            style={{ height: '500px', width: '500px' }}
+            frontStyle={{ ...styles.card, background: 'black' }}
+            backStyle={{ ...styles.card, background: 'green' }}
+            frontComponent={<div>Question: {flashcards[currentIndex].question}</div>}
+            backComponent={<div>Answer: {flashcards[currentIndex].answer}</div>}
+            direction="horizontal"
+          />
+          <div className='flex justify-between' >
+            <button style={styles.button} onClick={handlePrevious}>Previous</button>
+            <button style={styles.button} onClick={handleNext}>Next</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Flashcard;
+export default FlashcardApp;
