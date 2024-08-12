@@ -142,6 +142,7 @@ function FlashcardApp() {
   return (
     <>
       <h1 className='text-center text-xl p-0 m-0' >Please Read message on All cards</h1>
+      <h1 className='text-center max-w-2xl text-xl p-0 m-0' >If no cards visible then please check after few minutes because i'm using cloud-clever server it may go down sometimes.</h1>
       <Toaster position="top-center" />
       <div style={styles.container}>
         {flashcards.length > 0 ? (
