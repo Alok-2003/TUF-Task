@@ -1,16 +1,14 @@
 import express from "express";
 import mysql from "mysql2";
 import cors from "cors";
-import dotenv from 'dotenv';
-dotenv.config();
 
 const app = express();
 
 const db = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    host: "bubdaokkftewbar8fhaj-mysql.services.clever-cloud.com",
+    user: "ukhiun6gxvhlfeh5",
+    password: "s9MoTb2SyM9apmONDwDh",
+    database: "bubdaokkftewbar8fhaj",
   });
 
 // Connect to the MySQL server
@@ -30,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/allcards", (req, res) => {
-  const q = "SELECT * FROM flashcard.flashcards;";
+  const q = "SELECT * FROM flashcard;";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -38,7 +36,7 @@ app.get("/allcards", (req, res) => {
 });
 
 app.post("/allcards", (req, res) => {
-  const q = "INSERT INTO flashcards (`question`,`answer`) VALUES (?)";
+  const q = "INSERT INTO flashcard (`question`,`answer`) VALUES (?)";
   // const values= ["What is React?","A JavaScript library for building user interfaces."]
   const values = [req.body.question, req.body.answer];
   db.query(q, [values], (err, data) => {
@@ -49,7 +47,7 @@ app.post("/allcards", (req, res) => {
 
 app.delete("/allcards/:id",(req,res)=>{
     const cardId= req.params.id;
-    const q= "DELETE FROM flashcards WHERE id = ?"
+    const q= "DELETE FROM flashcard WHERE id = ?"
     db.query(q, [cardId], (err, data) => {
         if (err) return res.json(err);
         return res.json("Book deleted Succcesfully");
@@ -58,7 +56,7 @@ app.delete("/allcards/:id",(req,res)=>{
 
 app.put("/allcards/:id", (req, res) => {
     const cardId = req.params.id;
-    const q = "UPDATE flashcards SET `question`= ?, `answer`= ? WHERE id = ?";
+    const q = "UPDATE flashcard SET `question`= ?, `answer`= ? WHERE id = ?";
   
     const values = [
       req.body.question,
