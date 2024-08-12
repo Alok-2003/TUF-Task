@@ -141,11 +141,13 @@ function FlashcardApp() {
   console.log(flashcards)
   return (
     <>
+      <h1 className='text-center text-xl p-0 m-0' >Please Read message on All cards</h1>
       <Toaster position="top-center" />
       <div style={styles.container}>
         {flashcards.length > 0 ? (
           <div>
-            <div className="flex justify-end mb-4 ">
+            <div className="flex justify-between items-center mb-4 ">
+              <h1 className='ml-6 text-[1.4rem]' >{`${currentIndex + 1}/${flashcards.length}`}</h1>
               <Button>
                 <Trash2 className="hover:bg-red-400 rounded-full p-2 transition ease-in-out duration-500" size={45} onClick={() => handleDelete(flashcards[currentIndex]?.id)} />
               </Button>
