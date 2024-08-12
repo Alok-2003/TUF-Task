@@ -149,6 +149,7 @@ function FlashcardApp() {
             <ChevronRight size={40} onClick={handleNext} />
           </div>
 
+<h1 className='text-center mb-4' >Hover on card to flip</h1>
 
           <div className='w-full flex justify-between px-10' >
             <Button
