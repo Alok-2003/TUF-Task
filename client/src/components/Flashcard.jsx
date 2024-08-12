@@ -14,7 +14,8 @@ function FlashcardApp() {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/allcards');
+        // const response = await axios.get('http://localhost:8800/allcards');
+        const response = await axios.get('https://tuf-task-api.vercel.app/allcards');
         setFlashcards(response.data);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
@@ -35,7 +36,7 @@ function FlashcardApp() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/allcards/${id}`);
+      await axios.delete(`https://tuf-task-api.vercel.app/allcards/${id}`);
       setFlashcards((prevFlashcards) =>
         prevFlashcards.filter((card) => card.id !== id)
       );
@@ -70,7 +71,7 @@ function FlashcardApp() {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8800/allcards", card);
+      await axios.post("https://tuf-task-api.vercel.app/allcards", card);
       setIsOpen(false);
       setFlashcards([...flashcards, card]);
     } catch (error) {
@@ -81,7 +82,7 @@ function FlashcardApp() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8800/allcards/${flashcards[currentIndex].id}`, card);
+      await axios.put(`https://tuf-task-api.vercel.app/allcards/${flashcards[currentIndex].id}`, card);
       setFlashcards(prevFlashcards =>
         prevFlashcards.map((c, index) =>
           index === currentIndex ? { ...c, ...card } : c
