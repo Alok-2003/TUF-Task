@@ -41,7 +41,7 @@ app.post("/allcards", (req, res) => {
   const values = [req.body.question, req.body.answer];
   db.query(q, [values], (err, data) => {
     if (err) return res.json(err);
-    return res.json("Book created Succcesfully");
+    return res.json("card created Succcesfully");
   });
 });
 
@@ -50,7 +50,7 @@ app.delete("/allcards/:id",(req,res)=>{
     const q= "DELETE FROM flashcard WHERE id = ?"
     db.query(q, [cardId], (err, data) => {
         if (err) return res.json(err);
-        return res.json("Book deleted Succcesfully");
+        return res.json("card deleted Succcesfully");
       });
 })
 
